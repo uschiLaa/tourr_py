@@ -1,0 +1,6 @@
+This works for python3, assuming that rpy2 has been installed.
+The only non-base R package required is tourr, it can be installed by calling install.py. #does this actually work?
+Python packages required: ConfigParser, rpy2
+
+At the moment this is only basic implementation where the only thing read from the parameter.ini file is the path to the input file to use.
+Only very basic sanity check, testing that the data frame built from input file has at least 2 columns. 
