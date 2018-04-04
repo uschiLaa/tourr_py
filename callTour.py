@@ -27,18 +27,21 @@ if df.ncol < 2:
 	sys.exit()
 
 #select columns to show
-selCols = [int(x) for x in params.get("options","showCols").split(",")]
-selCols = robjects.IntVector(selCols)
-dfShow = df.rx(selCols)
+try:
+	selCols = [int(x) for x in params.get("options","showCols").split(",")]
+	selCols = robjects.IntVector(selCols)
+	dfShow = df.rx(selCols)
+except: dfShow = df
 
 #get color vector
-colV = df.rx2(params.get("style","col")) #first extract column from dataframe
-colV = base.as_integer(base.factor(colV)) #some reformatting so we get values 1, 2, ...
-nCol = base.length(base.unique(colV)) #number of colors we need to select from palette
-pal = colorspace.rainbow_hcl(nCol) #defining color palette
-print(pal)
-col = pal.rx(colV) #defining color vector
-print(col)
+colN = params.get("style","col")
+if colN in df.names:
+	colV = df.rx2(colN) #first extract column from dataframe
+	colV = base.as_integer(base.factor(colV)) #some reformatting so we get values 1, 2, ...
+	nCol = base.length(base.unique(colV)) #number of colors we need to select from palette
+	pal = colorspace.rainbow_hcl(nCol) #defining color palette
+	col = pal.rx(colV) #defining color vector
+else: col = "black"
 
 tourr.animate_xy(dfShow, col=col)
 
