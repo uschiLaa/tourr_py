@@ -9,6 +9,8 @@ from rpy2.robjects.vectors import DataFrame
 
 #load r packages we want to use
 tourr = importr("tourr")
+colorspace = importr("colorspace")
+base = importr('base')
 
 #get options, for now simple input file path being passed in as sys.argv[1]
 #inF = sys.argv[1]
@@ -24,7 +26,21 @@ if df.ncol < 2:
 	print("ERROR: need input in CSV format with at least 2 columns")
 	sys.exit()
 
-tourr.animate(df)
+#select columns to show
+selCols = [int(x) for x in params.get("options","showCols").split(",")]
+selCols = robjects.IntVector(selCols)
+dfShow = df.rx(selCols)
+
+#get color vector
+colV = df.rx2(params.get("style","col")) #first extract column from dataframe
+colV = base.as_integer(base.factor(colV)) #some reformatting so we get values 1, 2, ...
+nCol = base.length(base.unique(colV)) #number of colors we need to select from palette
+pal = colorspace.rainbow_hcl(nCol) #defining color palette
+print(pal)
+col = pal.rx(colV) #defining color vector
+print(col)
+
+tourr.animate_xy(dfShow, col=col)
 
 
 #do more fancy stuff as
