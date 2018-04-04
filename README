@@ -7,5 +7,13 @@ At the moment this is only basic implementation where the only thing read from t
 Only very basic sanity check, testing that the data frame built from input file has at least 2 columns.
 
 UPDATE:
-Added color argument, at the moment it is necessary input, should be optional, same for selecting columns.
-Now using animate_xy as color is not passed when using animate function 
+Added color argument, and column selection.
+Now using animate_xy as color is not passed when using animate function
+
+TODO:
+how to handle pch and sorting of points
+selecting only numeric columns for dfShow
+selecting tour type (keep guided tour for later..)
+selecting rescaling or not
+option of saving to GIF instead of display
+do we want more than 2d scatter plots? it should be good enough for now
