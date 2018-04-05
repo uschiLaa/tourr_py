@@ -24,6 +24,12 @@ if df.ncol < 2:
 	print("ERROR: need input in CSV format with at least 2 columns")
 	sys.exit()
 
+#sort points according to column defined by sort
+sortCol = params.get("style","sort")
+if sortCol in df.names:
+        sortVec = base.order(df.rx2(sortCol))
+        df = df.rx(sortVec,True)
+
 #select columns to show
 #here we assume the user knows which columns he is selecting, i.e. they should all be numeric
 try:
@@ -53,6 +59,7 @@ try:
 #otherwise pch should be column name, column containing integer values of the individual pch for each point
 except:
 	pch = df.rx2(pch)
+
 
 tourr.animate_xy(dfShow, col=col, pch=pch)
 
