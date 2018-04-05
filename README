@@ -11,8 +11,9 @@ Added color argument, and column selection.
 Now using animate_xy as color is not passed when using animate function
 
 TODO:
-how to handle pch and sorting of points
-selecting only numeric columns for dfShow
+how to handle pch								DONE
+selecting only numeric columns for dfShow					DONE
+sorting of points
 selecting tour type (keep guided tour for later..)
 selecting rescaling or not
 option of saving to GIF instead of display

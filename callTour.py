@@ -12,9 +12,6 @@ tourr = importr("tourr")
 colorspace = importr("colorspace")
 base = importr('base')
 
-#get options, for now simple input file path being passed in as sys.argv[1]
-#inF = sys.argv[1]
-
 #get parameters from param file
 params = configparser.ConfigParser( inline_comment_prefixes=( ';', ) )
 params.read("parameter.ini")
@@ -22,18 +19,21 @@ inF = params.get("input","f")
 
 #read input file into r dataframe
 df = DataFrame.from_csvfile(inF)
+#simple check that input format fits what we expect (only test number of columns here)
 if df.ncol < 2:
 	print("ERROR: need input in CSV format with at least 2 columns")
 	sys.exit()
 
 #select columns to show
+#here we assume the user knows which columns he is selecting, i.e. they should all be numeric
 try:
 	selCols = [int(x) for x in params.get("options","showCols").split(",")]
 	selCols = robjects.IntVector(selCols)
 	dfShow = df.rx(selCols)
-#if this fails we show all columns
-#FIXME should not be df but only numeric columns
-except: dfShow = df
+#if this fails we show all numeric columns
+except:
+	numCols = base.sapply(df, base.is_numeric)
+	dfShow = df.rx(numCols)
 
 #get color vector
 colN = params.get("style","col")
@@ -45,5 +45,14 @@ if colN in df.names:
 	col = pal.rx(colV)				#defining color vector
 else: col = "black"					#if colors not set by user keep default
 
-tourr.animate_xy(dfShow, col=col)
+#get pch number/vector
+pch = params.get("style","pch")
+#if pch is an integer, we use this style for all points
+try:
+	pch = int(pch)
+#otherwise pch should be column name, column containing integer values of the individual pch for each point
+except:
+	pch = df.rx2(pch)
+
+tourr.animate_xy(dfShow, col=col, pch=pch)
 
