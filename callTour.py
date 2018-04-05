@@ -65,12 +65,18 @@ tourType = params.get("options","tourType")
 if not tourType in ["grand", "little"]:
 	print("WARNING: Unknown tour type selected, defaulting to grand tour")
 	tourType = "grand"
-
 if tourType == "grand":
 	tour = tourr.grand_tour()
 else:
 	tour = tourr.little_tour()
 
+#rescaling or not?
+rescale = params.getboolean("options","rescale")
 
-tourr.animate_xy(dfShow, tour_path= tour, col=col, pch=pch)
+#display setting
+disp = tourr.display_xy(col=col, pch=pch)
+
+#need to convert dataframe to matrix for animation
+mat = base.as_matrix(dfShow)
+tourr.animate(mat, tour_path= tour, display=disp, rescale=rescale)
 
