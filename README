@@ -1,5 +1,5 @@
 This works for python3, assuming that rpy2 has been installed.
-The only non-base R package required is tourr, it can be installed by calling install.py. #does this actually work?
+The only non-base R package required is tourr, it can be installed by calling install.py.
 Adding some package for color palette, maybe colorspace?
 Python packages required: ConfigParser, rpy2
 
@@ -15,6 +15,14 @@ how to handle pch								DONE
 selecting only numeric columns for dfShow					DONE
 sorting of points								DONE
 selecting tour type (keep guided tour for later..)				DONE
-selecting rescaling or not
+selecting rescaling or not							DONE
 option of saving to GIF instead of display
 do we want more than 2d scatter plots? it should be good enough for now
+
+UPDATE REQUIREMENTS:
+If the user wants to save GIF output there are additional requirements:
+* need to install ImageMagick
+* need to install R package animation (will be installed by install.py together with tourr)
+
+
+
