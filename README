@@ -8,7 +8,7 @@ Only very basic sanity check, testing that the data frame built from input file 
 
 UPDATE:
 Added color argument, and column selection.
-Now using animate_xy as color is not passed when using animate function
+Now using animate_xy as color is not passed when using animate function ---- Now using animate, passing display_xy with color, pch arguments
 
 TODO:
 how to handle pch								DONE
@@ -16,13 +16,13 @@ selecting only numeric columns for dfShow					DONE
 sorting of points								DONE
 selecting tour type (keep guided tour for later..)				DONE
 selecting rescaling or not							DONE
-option of saving to GIF instead of display
+option of saving to GIF instead of display					DONE
 do we want more than 2d scatter plots? it should be good enough for now
 
 UPDATE REQUIREMENTS:
-If the user wants to save GIF output there are additional requirements:
-* need to install ImageMagick
-* need to install R package animation (will be installed by install.py together with tourr)
-
+We save GIFs using the python package moviepy which needs to be installed separately.
+Note that a common error arises as ffmpeg is not (currently) automatically installed (when installing moviepy via pip)
+It can be installed e.g. using homebrew as 'brew install ffmpeg'
+Note that files in the temp directory will be removed when asking to save a GIF, while png files used to generate it will not be removed after running
 
 

@@ -1,5 +1,5 @@
 #general python imports first
-import sys
+import sys, os
 import configparser
 
 #r specific python imports
@@ -78,5 +78,49 @@ disp = tourr.display_xy(col=col, pch=pch)
 
 #need to convert dataframe to matrix for animation
 mat = base.as_matrix(dfShow)
-tourr.animate(mat, tour_path= tour, display=disp, rescale=rescale)
+
+#decide if displaying output or saving gif
+saveGIF = (params.get("output","out")=="GIF")
+if saveGIF:
+	#try to load moviepy
+	try:
+		import moviepy.editor as mpy
+	except:
+		print("ERROR: Need to install moviepy to save GIF output.")
+		sys.exit()
+	#first check that nProj is integer
+	try:
+		nProj = int(params.get("output","nProj"))
+	except:
+		print("WARNING: nProj must be integer number, defaulting to 10")
+		nProj = 10
+	#check that output name makes sense
+	outName = params.get("output","n")
+	if not outName.split(".")[1] == "gif":
+		outName = outName.split(".")[0]+".gif"
+		print("WARNING: Output filename should have extension '.gif', using output filename %s" %outName)
+	#check that fps is int
+	try:
+		fps = int(params.get("output","fps"))
+	except:
+		print("WARNING: fps must be given as integer, defaulting to 10")
+		fps = 10
+	#now we can generate the GIF
+	#check if temp directory exists, create if not
+	if not os.path.isdir('temp/'): os.mkdir('temp/')
+	#clean temp directory
+	os.system("rm temp/*")
+	#start by saving png output
+	tourr.render(mat, tour, disp, 'png', "temp/temp-%03d.png", rescale=rescale, frames=nProj)
+	#get all output png files
+	pngL = os.listdir("temp")
+	pngL.sort()
+	pngL = ["temp/"+ x for x in pngL]
+	clip = mpy.ImageSequenceClip(pngL, fps=fps)
+	clip.write_gif(outName, fps=fps)
+
+else:
+	#otherwise display tour on default graphic device with infinite number of bases (close window to terminate)
+	#FIXME can I suppress error messages when closing?
+	tourr.animate(mat, tour_path= tour, display=disp, rescale=rescale)
 
