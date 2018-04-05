@@ -14,7 +14,7 @@ TODO:
 how to handle pch								DONE
 selecting only numeric columns for dfShow					DONE
 sorting of points								DONE
-selecting tour type (keep guided tour for later..)
+selecting tour type (keep guided tour for later..)				DONE
 selecting rescaling or not
 option of saving to GIF instead of display
 do we want more than 2d scatter plots? it should be good enough for now

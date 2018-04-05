@@ -60,6 +60,17 @@ try:
 except:
 	pch = df.rx2(pch)
 
+#selecting tour type between grand and little tour
+tourType = params.get("options","tourType")
+if not tourType in ["grand", "little"]:
+	print("WARNING: Unknown tour type selected, defaulting to grand tour")
+	tourType = "grand"
 
-tourr.animate_xy(dfShow, col=col, pch=pch)
+if tourType == "grand":
+	tour = tourr.grand_tour()
+else:
+	tour = tourr.little_tour()
+
+
+tourr.animate_xy(dfShow, tour_path= tour, col=col, pch=pch)
 
